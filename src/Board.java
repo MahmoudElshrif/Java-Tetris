@@ -1,64 +1,124 @@
-public class Board {
-    int[][] grid = new int[25][10];
-    int x = 0;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-    public void setBlock(int row,int col,int val){
+public class Board {
+    boolean[][] grid = new boolean[25][10];
+    int x = 0;
+    Scanner input;
+
+    Piece cur;
+
+
+    public void setBlock(int row,int col,boolean val){
         grid[row][col] = val;
     }
 
-    public int getBlock(int row,int col){
+    public boolean getBlock(int row,int col){
         return grid[row][col];
     }
     public Board(){
+        cur = new Stick();
+        input = new Scanner(System.in);
         for(int i = 0;i < 25;i++){
             for(int j = 0;j < 10;j++){
-                setBlock(i,j,0);
+                setBlock(i,j,false);
             }
-        }
-        for(int i = 0;i < 10;i++){
-            setBlock(24,i,2);
         }
     }
 
+    public boolean CheckMove(int dir,ArrayList<ArrayList<Integer>> poses){
+        for(var p : poses){
+            if(p.get(0) + dir < 0 || p.get(0) + dir > 9) return false;
+            if(getBlock(p.get(1),p.get(0) + dir)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void HandleInput(){
+        String move = input.nextLine();
+        cur.MoveDown();
+        var poses = cur.GetAllPositions();
+        if(move.equals("d") && CheckMove(1,poses)){
+            cur.MoveRight();
+        }
+        else if(move.equals("a") && CheckMove(-1,poses)){
+            cur.MoveLeft();
+        }
+        else if(move.equals("e")){
+            cur.RotateRight();
+        }
+        else if(move.equals("q")){
+            cur.RotateLeft();
+        }
+        else if(!move.isEmpty()){
+            return;
+        }
+
+
+    }
+
     public void UpdateBoard() {
-        x++;
-        if (x == 5) {
-            x = 0;
-            for (int i = 0; i < 5; i++) {
-                setBlock(24, i, 2);
-            }
-            for (int i = 5; i < 10; i++) {
-                setBlock(23, i, 2);
-            }
-        }
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (getBlock(i, j) == 2) {
-                    if (i == 0) setBlock(i, j, 1);
-                    else if (getBlock(i - 1, j) != 0) {
-                        setBlock(i, j, 1);
-                    } else {
-                        setBlock(i, j, 0);
-                        setBlock(i - 1, j, 2);
-                    }
+
+        HandleInput();
+
+        ArrayList<ArrayList<Integer>> poses;
+        while(true){
+            poses = cur.GetAllPositions();
+            boolean flag = false;
+            for(var p : poses){
+                if(p.get(0) < 0){
+                    cur.MoveRight();
+                    flag = true;
+//                    System.out.println(p);
+                    break;
+
                 }
-            }
-        }
-
-
-        boolean flag = true;
-        while (flag) {
-            for (int j = 0; j < 10; j++) {
-                if (getBlock(0, j) != 1) {
-                    flag = false;
+                else if(p.get(0) > 9){
+                    cur.MoveLeft();
+//                    System.out.println(p);
+                    flag = true;
+                    break;
+                }
+                else if(p.get(1) < 0 || getBlock(p.get(1),p.get(0))){
+                    cur.MoveUp();
+                    flag = true;
                     break;
                 }
             }
-            if (flag) {
+
+            if(!flag)
+                break;
+        }
+
+
+        boolean flag = false;
+        for(var p : poses){
+            if(p.get(1) == 0 || getBlock(p.get(1) - 1,p.get(0))){
+                flag = true;
+//                break;
+            }
+        }
+
+        if(flag){
+            for(var p : poses){
+                setBlock(p.get(1),p.get(0),true);
+            }
+            cur = new Stick();
+        }
+
+        while (true) {
+            boolean full = true;
+            for (int j = 0; j < 10; j++) {
+                if (!getBlock(0, j)) {
+                    full = false;
+                }
+            }
+            if (full) {
                 for(int i = 0;i < 24;i++){
                     for(int j = 0;j < 10;j++){
-                        if(getBlock(i,j) == 2) continue;
-                        setBlock(i,j,getBlock(i + 1,j) == 1 ? 1 : 0);
+                        setBlock(i,j,getBlock(i + 1,j));
                     }
                 }
             }
@@ -74,16 +134,21 @@ public class Board {
         for(int i = 19;i >= 0;i--){
             System.out.print("| ");
             for(int j = 0;j < 10;j++){
-                switch(getBlock(i,j)){
-                    case 0 -> System.out.print("□");
-                    case 1 -> System.out.print("■");
-                    case 2 -> System.out.print("B");
+                if(cur.isBlock(i,j)){
+                    System.out.print("@");
+                }
+                else {
+                    if (!getBlock(i, j))
+                        System.out.print("□");
+                    else
+                        System.out.print("■");
+
                 }
                 System.out.print(" ");
             }
             System.out.print("|\n");
         }
-        System.out.println("______________________");
+        System.out.println(" _____________________");
     }
 }
 

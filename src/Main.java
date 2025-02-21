@@ -10,7 +10,6 @@ public class Main {
 
         while(true){
             board.UpdateBoard();
-            s.nextLine();
         }
     }
 }
