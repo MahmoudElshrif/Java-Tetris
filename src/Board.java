@@ -16,14 +16,55 @@ public class Board {
     public boolean getBlock(int row,int col){
         return grid[row][col];
     }
+
+    public ArrayList<ArrayList<Integer>> GetSlam(ArrayList<ArrayList<Integer>> poses){
+        int x = 0;
+        while(true){
+            boolean flag = false;
+            for(var p : poses){
+                if(p.get(1) - x == 0){
+                    flag = true;
+                    break;
+                }
+                if(getBlock(p.get(1) - x - 1,p.get(0))){
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag){
+                var newposes = new ArrayList<ArrayList<Integer>>();
+
+                for(var p : poses){
+                    var pos = new ArrayList<Integer>();
+
+                    pos.add(p.get(0));
+                    pos.add(p.get(1) - x);
+
+                    newposes.add(pos);
+                }
+                return newposes;
+            }
+            x++;
+        }
+
+    }
+
     public Board(){
-        cur = new Stick();
+        cur = new LRPiece();
         input = new Scanner(System.in);
         for(int i = 0;i < 25;i++){
             for(int j = 0;j < 10;j++){
                 setBlock(i,j,false);
             }
         }
+    }
+
+    public void FillSpace(ArrayList<ArrayList<Integer>> poses){
+        for(var p : poses){
+            setBlock(p.get(1),p.get(0),true);
+        }
+        cur = new IPiece();
     }
 
     public boolean CheckMove(int dir,ArrayList<ArrayList<Integer>> poses){
@@ -51,6 +92,9 @@ public class Board {
         }
         else if(move.equals("q")){
             cur.RotateLeft();
+        }
+        else if(move.equals("s")){
+            FillSpace(GetSlam(poses));
         }
         else if(!move.isEmpty()){
             return;
@@ -102,27 +146,30 @@ public class Board {
         }
 
         if(flag){
-            for(var p : poses){
-                setBlock(p.get(1),p.get(0),true);
-            }
-            cur = new Stick();
+            FillSpace(poses);
         }
 
-        while (true) {
+        for(int h = 0;h < 20;h++){
             boolean full = true;
+            boolean empty = true;
             for (int j = 0; j < 10; j++) {
-                if (!getBlock(0, j)) {
+                if (!getBlock(h, j)) {
                     full = false;
+                    break;
+                }
+                else{
+                    empty = false;
                 }
             }
             if (full) {
-                for(int i = 0;i < 24;i++){
+                for(int i = h;i < 24;i++){
                     for(int j = 0;j < 10;j++){
                         setBlock(i,j,getBlock(i + 1,j));
                     }
                 }
+                h -= 1;
             }
-            else{
+            if(empty){
                 break;
             }
         }
@@ -131,15 +178,26 @@ public class Board {
     }
 
     public void ShowBoard(){
+        var ghost = GetSlam(cur.GetAllPositions());
         for(int i = 19;i >= 0;i--){
             System.out.print("| ");
             for(int j = 0;j < 10;j++){
+                boolean flag = false;
+                for(var g : ghost){
+                    if(g.get(0) == j && g.get(1) == i){
+                        flag = true;
+                        break;
+                    }
+                }
                 if(cur.isBlock(i,j)){
-                    System.out.print("@");
+                    System.out.print("#");
+                }
+                else if(flag){
+                    System.out.print("X");
                 }
                 else {
                     if (!getBlock(i, j))
-                        System.out.print("□");
+                        System.out.print("-");
                     else
                         System.out.print("■");
 

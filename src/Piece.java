@@ -58,8 +58,8 @@ public class Piece {
 
 }
 
-class Cube extends Piece {
-    public Cube(){
+class OPiece extends Piece {
+    public OPiece(){
         rots[0] = new boolean[][]{{false,false,false,false},{false,true,true,false},{false,true,true,false},{false,false,false,false}};
         rots[1] = new boolean[][]{{false,false,false,false},{false,true,true,false},{false,true,true,false},{false,false,false,false}};
         rots[2] = new boolean[][]{{false,false,false,false},{false,true,true,false},{false,true,true,false},{false,false,false,false}};
@@ -67,8 +67,8 @@ class Cube extends Piece {
     }
 }
 
-class Stick extends Piece {
-    public Stick(){
+class IPiece extends Piece {
+    public IPiece(){
         rots[0] = new boolean[][]{{false,false,false,false},{false,false,false,false},{true,true,true,true},{false,false,false,false}};
         rots[1] = new boolean[][]{{false,false,true,false},{false,false,true,false},{false,false,true,false},{false,false,true,false}};
         rots[2] = rots[0];
@@ -76,3 +76,20 @@ class Stick extends Piece {
     }
 }
 
+class LPiece extends Piece {
+    public LPiece(){
+        rots[0] = new boolean[][]{{false,false,false,false},{true,true,true,false},{false,false,true,false},{false,false,false,false}};
+        rots[1] = new boolean[][]{{false,true,false,false},{false,true,false,false},{true,true,false,false},{false,false,false,false}};
+        rots[2] = new boolean[][]{{true,false,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}};
+        rots[3] = new boolean[][]{{false,true,true,false},{false,true,false,false},{false,true,false,false},{false,false,false,false}};
+    }
+}
+
+class LRPiece extends Piece {
+    public LRPiece(){
+        rots[0] = new boolean[][]{{false,false,false,false},{true,true,true,false},{true,false,false,false},{false,false,false,false}};
+        rots[1] = new boolean[][]{{true,true,false,false},{false,true,false,false},{false,true,false,false},{false,false,false,false}};
+        rots[2] = new boolean[][]{{false,false,true,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}};
+        rots[3] = new boolean[][]{{false,true,false,false},{false,true,false,false},{false,true,true,false},{false,false,false,false}};
+    }
+}
