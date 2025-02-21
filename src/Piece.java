@@ -42,6 +42,18 @@ public class Piece {
         return rots[currot][i - x][j - y];
     }
 
+    public String getRow(int row){
+        StringBuilder s = new StringBuilder();
+        for(int i = 0;i < 4;i++){
+            if(rots[0][row][i]){
+                s.append("@ ");
+            }
+            else{
+                s.append("  ");
+            }
+        }
+        return s.toString();
+    }
     public ArrayList<ArrayList<Integer>> GetAllPositions(){
         ArrayList<ArrayList<Integer>> poses = new ArrayList<ArrayList<Integer>>();
         for(int i = 0;i < 4;i++){
@@ -69,7 +81,7 @@ class OPiece extends Piece {
 
 class IPiece extends Piece {
     public IPiece(){
-        rots[0] = new boolean[][]{{false,false,false,false},{false,false,false,false},{true,true,true,true},{false,false,false,false}};
+        rots[0] = new boolean[][]{{false,false,false,false},{true,true,true,true},{false,false,false,false},{false,false,false,false}};
         rots[1] = new boolean[][]{{false,false,true,false},{false,false,true,false},{false,false,true,false},{false,false,true,false}};
         rots[2] = rots[0];
         rots[3] = rots[1];
@@ -91,5 +103,32 @@ class LRPiece extends Piece {
         rots[1] = new boolean[][]{{true,true,false,false},{false,true,false,false},{false,true,false,false},{false,false,false,false}};
         rots[2] = new boolean[][]{{false,false,true,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}};
         rots[3] = new boolean[][]{{false,true,false,false},{false,true,false,false},{false,true,true,false},{false,false,false,false}};
+    }
+}
+
+class JPiece extends Piece {
+    public JPiece(){
+        rots[0] = new boolean[][]{{false,true,false,false},{false,true,true,false},{false,false,true,false},{false,false,false,false}};
+        rots[1] = new boolean[][]{{false,false,false,false},{false,true,true,false},{true,true,false,false},{false,false,false,false}};
+        rots[2] = rots[0];
+        rots[3] = rots[1];
+    }
+}
+
+class JRPiece extends Piece {
+    public JRPiece(){
+        rots[0] = new boolean[][]{{false,false,true,false},{false,true,true,false},{false,true,false,false},{false,false,false,false}};
+        rots[1] = new boolean[][]{{false,false,false,false},{true,true,false,false},{false,true,true,false},{false,false,false,false}};
+        rots[2] = rots[0];
+        rots[3] = rots[1];
+    }
+}
+
+class TPiece extends Piece {
+    public TPiece(){
+        rots[0] = new boolean[][]{{false,false,false,false},{true,true,true,false},{false,true,false,false},{false,false,false,false}};
+        rots[1] = new boolean[][]{{false,true,false,false},{true,true,false,false},{false,true,false,false},{false,false,false,false}};
+        rots[2] = new boolean[][]{{false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}};
+        rots[3] = new boolean[][]{{false,true,false,false},{false,true,true,false},{false,true,false,false},{false,false,false,false}};
     }
 }

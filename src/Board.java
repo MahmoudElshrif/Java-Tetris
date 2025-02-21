@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Board {
@@ -7,6 +8,7 @@ public class Board {
     Scanner input;
 
     Piece cur;
+    Piece next;
 
 
     public void setBlock(int row,int col,boolean val){
@@ -51,20 +53,35 @@ public class Board {
     }
 
     public Board(){
-        cur = new LRPiece();
+        cur = new JRPiece();
+        next = new OPiece();
         input = new Scanner(System.in);
         for(int i = 0;i < 25;i++){
             for(int j = 0;j < 10;j++){
                 setBlock(i,j,false);
             }
         }
+
+        ShowBoard();
     }
 
     public void FillSpace(ArrayList<ArrayList<Integer>> poses){
         for(var p : poses){
             setBlock(p.get(1),p.get(0),true);
         }
-        cur = new IPiece();
+        cur = next;
+        Random r = new Random();
+
+        next = switch(r.nextInt(7)){
+            case 0 -> new OPiece();
+            case 1 -> new IPiece();
+            case 2 -> new LPiece();
+            case 3 -> new LRPiece();
+            case 4 -> new JPiece();
+            case 5 -> new JRPiece();
+            case 6 -> new TPiece();
+            default -> new OPiece();
+        };
     }
 
     public boolean CheckMove(int dir,ArrayList<ArrayList<Integer>> poses){
@@ -193,7 +210,7 @@ public class Board {
                     System.out.print("#");
                 }
                 else if(flag){
-                    System.out.print("X");
+                    System.out.print("x");
                 }
                 else {
                     if (!getBlock(i, j))
@@ -204,7 +221,23 @@ public class Board {
                 }
                 System.out.print(" ");
             }
-            System.out.print("|\n");
+            System.out.print("|");
+            if(i == 18){
+                System.out.print(" Next");
+            }
+            else if(i == 17){
+                System.out.print(" --------- ");
+            }
+            else if(i <= 16 && i >= 14) {
+                System.out.print("| ");
+                System.out.print(next.getRow(16 - i));
+                System.out.print("|");
+
+            }
+            else if(i == 13){
+                System.out.print(" --------- ");
+            }
+            System.out.print("\n");
         }
         System.out.println(" _____________________");
     }
