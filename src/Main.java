@@ -8,9 +8,12 @@ public class Main {
         Scanner s = new Scanner(System.in);
 
 
-        while(true){
-            board.UpdateBoard();
+        while(board.UpdateBoard()){
+
         }
+
+        System.out.println("GAME OVER");
+        System.out.println(board.score);
     }
 }
 

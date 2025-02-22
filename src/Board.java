@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Board {
     boolean[][] grid = new boolean[25][10];
@@ -9,7 +7,11 @@ public class Board {
 
     Piece cur;
     Piece next;
-
+    int score = 0;
+    int cleared = 0;
+    final int[] scores = {40,100,300,1200};
+    ArrayList<Integer> pieces = new ArrayList<Integer>();
+    int nextpieceind = 0;
 
     public void setBlock(int row,int col,boolean val){
         grid[row][col] = val;
@@ -17,6 +19,35 @@ public class Board {
 
     public boolean getBlock(int row,int col){
         return grid[row][col];
+    }
+
+
+    public void ResetBuffer(){
+        Collections.shuffle(pieces);
+        nextpieceind = 0;
+    }
+
+    public Piece GetNextPiece(){
+        Piece p = switch(pieces.get(nextpieceind)){
+            case 0 -> new OPiece();
+            case 1 -> new IPiece();
+            case 2 -> new LPiece();
+            case 3 -> new LRPiece();
+            case 4 -> new JPiece();
+            case 5 -> new JRPiece();
+            case 6 -> new TPiece();
+            default -> new OPiece();
+        };
+
+        nextpieceind++;
+        if(nextpieceind == 7){
+            ResetBuffer();
+        }
+
+        System.out.println(pieces);
+        System.out.println(nextpieceind);
+
+        return p;
     }
 
     public ArrayList<ArrayList<Integer>> GetSlam(ArrayList<ArrayList<Integer>> poses){
@@ -53,14 +84,17 @@ public class Board {
     }
 
     public Board(){
-        cur = new JRPiece();
-        next = new OPiece();
+        for(int i = 0;i < 7;i++) pieces.add(i);
+        ResetBuffer();
+        cur = GetNextPiece();
+        next = GetNextPiece();
         input = new Scanner(System.in);
         for(int i = 0;i < 25;i++){
             for(int j = 0;j < 10;j++){
                 setBlock(i,j,false);
             }
         }
+
 
         ShowBoard();
     }
@@ -72,16 +106,7 @@ public class Board {
         cur = next;
         Random r = new Random();
 
-        next = switch(r.nextInt(7)){
-            case 0 -> new OPiece();
-            case 1 -> new IPiece();
-            case 2 -> new LPiece();
-            case 3 -> new LRPiece();
-            case 4 -> new JPiece();
-            case 5 -> new JRPiece();
-            case 6 -> new TPiece();
-            default -> new OPiece();
-        };
+        next = GetNextPiece();
     }
 
     public boolean CheckMove(int dir,ArrayList<ArrayList<Integer>> poses){
@@ -104,7 +129,7 @@ public class Board {
         else if(move.equals("a") && CheckMove(-1,poses)){
             cur.MoveLeft();
         }
-        else if(move.equals("e")){
+        else if(move.equals("e") || move.equals("w")){
             cur.RotateRight();
         }
         else if(move.equals("q")){
@@ -120,7 +145,7 @@ public class Board {
 
     }
 
-    public void UpdateBoard() {
+    public boolean UpdateBoard() {
 
         HandleInput();
 
@@ -179,6 +204,7 @@ public class Board {
                 }
             }
             if (full) {
+                cleared++;
                 for(int i = h;i < 24;i++){
                     for(int j = 0;j < 10;j++){
                         setBlock(i,j,getBlock(i + 1,j));
@@ -192,6 +218,12 @@ public class Board {
         }
 
         this.ShowBoard();
+        for(int i = 0;i < 10;i++){
+            if(getBlock(19,i)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void ShowBoard(){
@@ -236,6 +268,17 @@ public class Board {
             }
             else if(i == 13){
                 System.out.print(" --------- ");
+            }
+            else if(i == 12){
+                System.out.print(" Score:");
+            }
+            else if(i == 11){
+                System.out.print("     " + score);
+                if(cleared != 0){
+                    System.out.print("  +" + scores[cleared - 1]);
+                    score += scores[cleared - 1];
+                    cleared = 0;
+                }
             }
             System.out.print("\n");
         }
