@@ -44,9 +44,6 @@ public class Board {
             ResetBuffer();
         }
 
-        System.out.println(pieces);
-        System.out.println(nextpieceind);
-
         return p;
     }
 
