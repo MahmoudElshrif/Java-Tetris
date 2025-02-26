@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c1a9fd8-dae8-4d67-977d-1e40c15a0fd4" name="Changes" comment="Aaaaaaand done">
+    <list default="true" id="6c1a9fd8-dae8-4d67-977d-1e40c15a0fd4" name="Changes" comment="SCREENSHITS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Board.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740229485179</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="SCREENSHITS">
+      <option name="closed" value="true" />
+      <created>1740515894535</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740515894535</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -146,6 +153,7 @@
     <MESSAGE value=":shrug:" />
     <MESSAGE value="random next piece" />
     <MESSAGE value="Aaaaaaand done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aaaaaaand done" />
+    <MESSAGE value="SCREENSHITS" />
+    <option name="LAST_COMMIT_MESSAGE" value="SCREENSHITS" />
   </component>
 </project>

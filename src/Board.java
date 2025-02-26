@@ -117,7 +117,7 @@ public class Board {
     }
 
     public void HandleInput(){
-        String move = input.nextLine();
+        String move = input.nextLine().toLowerCase();
         cur.MoveDown();
         var poses = cur.GetAllPositions();
         if(move.equals("d") && CheckMove(1,poses)){
